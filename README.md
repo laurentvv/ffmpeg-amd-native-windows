@@ -30,7 +30,8 @@ Benchmarked with **hyperfine** (2 warmups + 8 runs, min/mean/max/σ) on real-wor
 | Transcode 4K→1080p `libx264 -fast` | **2.998 s** ± 0.016 | 3.002 s ± 0.007 | 3.000 s ± 0.004 | tie ±0.1% |
 | Encode AI film `libsvtav1 -p6` | **2.713 s ± 0.015** | 2.874 s ± 0.069 | 2.975 s ± 0.034 | **this build +6% / +10%** |
 | Encode AI film `libx265 -fast` | 2.337 s ± 0.010 | 2.339 s ± 0.011 | **2.334 s ± 0.010** | tie ±0.2% |
-| Decode AV1 1080p: `d3d12va` GPU vs `dav1d` CPU | **0.462 s** vs 0.773 s | — | — | **GPU 1.67× faster** |
+| Decode AV1 1080p `dav1d` (CPU) | **0.772 s ± 0.003** | 0.798 s ± 0.017 | 0.789 s ± 0.008 | **this build** (newer dav1d 1.5.4) |
+| Decode AV1 1080p `d3d12va` (GPU) | **0.467 s ± 0.004** | — | — | **RDNA2 GPU: 1.66–1.71× faster than any CPU** |
 
 **How to read this honestly:**
 - Where library versions are identical (x264, x265, H.264 decode): statistical ties. The hot paths are hand-written assembly with runtime CPU dispatch — `--cpu=native` can't add much there.
