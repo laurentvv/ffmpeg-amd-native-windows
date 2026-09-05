@@ -1,0 +1,11 @@
+prefix=/ucrt64
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: librist
+Description: Reliable Internet Stream Transport (static override for fully-static FFmpeg builds)
+Version: 0.2.20
+Requires.private: libcjson, liblz4
+Libs: -L${libdir} -lrist
+Libs.private: -lws2_32 -liphlpapi -lbcrypt -pthread -leverest -lmbedcrypto -lp256m
+Cflags: -I${includedir}

@@ -1,0 +1,10 @@
+prefix=/ucrt64
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: spirv-cross-c-shared
+Description: SPIRV-Cross C API (static override for fully-static FFmpeg builds)
+Version: 0.68.0
+Requires:
+Libs: -L${libdir} -lspirv-cross-c
+Cflags: -I${includedir}

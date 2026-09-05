@@ -1,0 +1,9 @@
+prefix=/ucrt64
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: shaderc
+Description: shaderc static (combined + glslang + SPIRV-Tools) override for fully-static FFmpeg builds
+Version: 2026.3.1
+Libs: -L${libdir} -lshaderc_combined -lglslang -lSPIRV -lSPIRV-Tools -lSPIRV-Tools-opt -lSPIRV-Tools -lSPIRV-Tools-link
+Cflags: -I${includedir}

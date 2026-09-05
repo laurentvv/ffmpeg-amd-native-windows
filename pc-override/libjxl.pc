@@ -1,0 +1,12 @@
+prefix=/ucrt64
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libjxl
+Description: JPEG XL (hwy DLL import override for static FFmpeg builds)
+Version: 0.12.0
+Requires.private: libbrotlienc libbrotlidec libjxl_cms
+Libs: -L${libdir} -ljxl
+Libs.private: -lm -lstdc++ -L${pcfiledir} -lhwy_dll
+Cflags: -I${includedir}
+Cflags.private: -DJXL_STATIC_DEFINE

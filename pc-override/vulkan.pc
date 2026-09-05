@@ -1,0 +1,8 @@
+prefix=/ucrt64
+includedir=${prefix}/include
+
+Name: Vulkan-Loader
+Description: Vulkan Loader (system driver DLL import, static-link friendly)
+Version: 1.4.357
+Libs: -L${pcfiledir} -lvulkan_1_sys
+Cflags: -I${includedir}

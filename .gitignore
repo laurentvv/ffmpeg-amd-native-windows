@@ -1,0 +1,4 @@
+# Generated artifacts (recreated by setup.sh / generate.sh)
+*.a
+*.log
+__pycache__/

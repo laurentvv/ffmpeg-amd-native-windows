@@ -1,0 +1,10 @@
+prefix=/ucrt64
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libmodplug
+Description: libmodplug (static override for fully-static FFmpeg builds)
+Version: 0.8.9.0
+Libs: -L${libdir} -lmodplug
+Libs.private: -lstdc++ -lm
+Cflags: -I${includedir} -DMODPLUG_STATIC
