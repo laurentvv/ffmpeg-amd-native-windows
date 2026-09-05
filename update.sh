@@ -84,6 +84,7 @@ cp /ucrt64/bin/libhwy.dll "$FFROOT/dist/bin/"
 # --- 6. Sanity check ---
 echo "== Sanity check =="
 "$FFROOT/dist/bin/ffmpeg.exe" -version | head -1
+"$FFROOT/dist/bin/ffprobe.exe" -version | head -1
 echo -n "AMF encoders: "
 "$FFROOT/dist/bin/ffmpeg.exe" -hide_banner -encoders 2>/dev/null | grep -c "_amf"
 "$FFROOT/dist/bin/ffmpeg.exe" -hide_banner -y -f lavfi -i testsrc2=duration=2:size=640x360:rate=30 \
