@@ -21,15 +21,21 @@ Built and benchmarked on a **Ryzen-class rig: i7-13700KF + RX 6950 XT + 32 GB RA
 | `-O3` + `--enable-lto` + `-flto=24` | Interprocedural optimization, parallel LTO link across 24 threads |
 | `make -j24` | Full 16C/24T utilization |
 
-Measured on identical workloads vs. the popular public builds (same machine, same day):
+Benchmarked with **hyperfine** (2 warmups + 8 runs, min/mean/max/σ) on real-world sources — a 4K H.264 production master and an AI-generated 1080p60 film — against gyan.dev full 9.0.1 and BtbN win64-gpl master (same machine, idle):
 
-| Workload (900 frames) | **This build** | gyan.dev full | BtbN win64-gpl |
-|---|---|---|---|
-| Filters 4K→1440p (scale+gblur+unsharp) | **6.28–6.31 s** | 6.31–6.38 s | 5.88–6.50 s |
-| libx264 1440p `-preset fast` | **3.85–4.02 s** | 3.87–4.05 s | 3.87–4.09 s |
-| `h264_amf` GPU encode 1080p | 2.11 s | 2.09 s | 2.09 s |
+| Workload | **This build** | gyan full | BtbN gpl | Winner |
+|---|---|---|---|---|
+| Decode 4K H.264 → null (CPU) | 1.086 s ± 0.006 | 1.104 s ± 0.003 | **1.080 s ± 0.003** | tie ±2% |
+| Transcode 4K→1080p `h264_amf` (GPU) | **2.157 s ± 0.011** | 2.178 s ± 0.015 | 2.162 s ± 0.011 | **this build** (13.9× realtime) |
+| Transcode 4K→1080p `libx264 -fast` | **2.998 s** ± 0.016 | 3.002 s ± 0.007 | 3.000 s ± 0.004 | tie ±0.1% |
+| Encode AI film `libsvtav1 -p6` | **2.713 s ± 0.015** | 2.874 s ± 0.069 | 2.975 s ± 0.034 | **this build +6% / +10%** |
+| Encode AI film `libx265 -fast` | 2.337 s ± 0.010 | 2.339 s ± 0.011 | **2.334 s ± 0.010** | tie ±0.2% |
+| Decode AV1 1080p: `d3d12va` GPU vs `dav1d` CPU | **0.462 s** vs 0.773 s | — | — | **GPU 1.67× faster** |
 
-*x264 wins both runs; filter pipelines are within system noise (±3%); GPU encoding is driver-bound and identical. Realistic expectation: 0–4% CPU-side gains, plus everything below that public builds simply don't ship.*
+**How to read this honestly:**
+- Where library versions are identical (x264, x265, H.264 decode): statistical ties. The hot paths are hand-written assembly with runtime CPU dispatch — `--cpu=native` can't add much there.
+- Where this build's *newer library* does the work (SVT-AV1 4.2 vs older): **+6–10% real speedup**. This is the rolling-release advantage: public builds freeze their library set at their build date.
+- The GPU results are hardware facts about the reference rig: RDNA2 decodes AV1 in hardware 1.67× faster than dav1d, and the full 4K→AMF pipeline runs at 13.9× realtime.
 
 ### 2. Complete AMD GPU stack
 - **AMF hardware encoders**: `h264_amf` (measured 257 fps @1080p), `hevc_amf` (10× realtime), `av1_amf` (RX 7000+ only — RDNA2 silicon lacks an AV1 encoder)
