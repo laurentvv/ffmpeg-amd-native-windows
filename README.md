@@ -21,6 +21,13 @@ Built and benchmarked on a **Ryzen-class rig: i7-13700KF + RX 6950 XT + 32 GB RA
 | `-O3` + `--enable-lto` + `-flto=24` | Interprocedural optimization, parallel LTO link across 24 threads |
 | `make -j24` | Full 16C/24T utilization |
 
+> **⚠️ CPU compatibility** — `--cpu=native` compiles *for the exact CPU that builds it*.
+> The published release binaries were built on an **i7-13700KF (Raptor Lake)** and therefore
+> require a modern x86-64 CPU with **AVX2/FMA/BMI2, and possibly AVX-VNNI** (GCC may emit VNNI
+> for this target). Safe on Intel Haswell (2013)+ and AMD Zen 4/5; Zen 3 and older may lack VNNI
+> and crash. Rebuilding on your own machine with `setup.sh` + `build_gpl.sh` always produces a
+> binary tailored to *your* CPU — that is the whole point of this project.
+
 Benchmarked with **hyperfine** (2 warmups + 8 runs, min/mean/max/σ) on real-world sources — a 4K H.264 production master and an AI-generated 1080p60 film — against gyan.dev full 9.0.1 and BtbN win64-gpl master (same machine, idle):
 
 | Workload | **This build** | gyan full | BtbN gpl | Winner |
